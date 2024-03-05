@@ -11,7 +11,8 @@ WORKDIR /rails
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="development" \
+    SECRET_KEY_BASE="H9XCqDbdXciUQHcpb4OIL53IBTMq612znaNANk3/j+UYAPLfsLWcBu3+6fOvT9y3pmVj0NQEZFI2Fgby8el557NPQIimH2Rg8mPUe81Iy/+NfYgEfhB1IAbo8S9aYgOCP1Z3AC1ApWxE5E3zMEIHaAvsmuO8Z7QophMfg2a80HIND2efLSG7enKr76q98UjHvuG/p9xVMREelkQzrbPgBzoIpP2SHRR9Oux28iVoP5aPd7YyMDJSb6bhH2XqMZKCMeUmL5XYdq/Twd1LvG54aulVSxydVgkDgui5JUljfB01J1t3dbs+GLoyFPZqpTDR7aj6i6b+LUn1ZDNCJ1mnwGUfjFlOQ6+7+6jQDWgYx5wEoWA+a3cSBmKVoSxNKu9cE/9ikQN6Yr855giE3axW4WYGOllD--Uj+QDkfiV5bPwTES--PQVYUcjXf0Rhl3Um0P5Z7Q=="
 
 
 # Throw-away build stage to reduce size of final image
@@ -41,7 +42,8 @@ RUN chmod +x bin/* && \
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-
+# Run pending migrations
+RUN bundle exec rails db:migrate
 # Final stage for app image
 FROM base
 

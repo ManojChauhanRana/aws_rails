@@ -38,6 +38,9 @@ RUN chmod +x bin/* && \
 # Precompiling assets for development
 RUN bundle exec rails assets:precompile
 
+# Run pending migrations
+RUN bundle exec rails db:migrate
+
 # Final stage for app image
 FROM base
 
